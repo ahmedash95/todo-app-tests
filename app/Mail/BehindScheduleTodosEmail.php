@@ -13,7 +13,7 @@ class BehindScheduleTodosEmail extends Mailable
 
     public $todos;
 
-    public function __construct(Arrayable $todos)
+    public function __construct($todos)
     {
         $this->todos = $todos;
     }

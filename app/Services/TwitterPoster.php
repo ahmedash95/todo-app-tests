@@ -11,7 +11,7 @@ class TwitterPoster
 {
     private $twitter;
 
-    public static function forUser(User $user): self
+    public function forUser(User $user): self
     {
         $config = $user->token('twitter');
 

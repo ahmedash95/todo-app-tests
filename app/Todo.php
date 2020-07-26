@@ -20,4 +20,9 @@ class Todo extends Model
     {
         return $q->where('status', self::STATUS_PENDING);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
