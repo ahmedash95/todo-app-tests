@@ -30,7 +30,7 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Change db host
-      run: php -r "str_replace('DB_HOST=127.0.0.1','DB_CONNECTION=mysql',file_get_contents('.env'));"
+      run: php -r "file_put_contents('.env',str_replace('DB_HOST=127.0.0.1','DB_CONNECTION=mysql',file_get_contents('.env')));"
     - name: Change db password
       run: php -r "file_put_contents('.env',str_replace('DB_PASSWORD=','DB_PASSWORD=root',file_get_contents('.env')));"
     - name: Install Dependencies
