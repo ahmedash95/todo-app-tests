@@ -15,7 +15,7 @@ class TodosTest extends TestCase
 
     public function test_logged_in_user_can_see_todos_page()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->get('/todo')
             ->assertStatus(200);
@@ -23,7 +23,7 @@ class TodosTest extends TestCase
 
     public function test_new_user_see_alert_to_connect_to_twitter()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->get('/todo')
             ->assertSee('to publish your todos');
@@ -31,11 +31,12 @@ class TodosTest extends TestCase
 
     public function test_user_can_add_todo()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
+            ->followingRedirects()
             ->post('/todo', [
                 'name' => 'simple todo',
-            ]);
+            ])->assertOk();
 
         $this->assertDatabaseHas('todos', [
             'user_id' => $user->id,
@@ -45,8 +46,8 @@ class TodosTest extends TestCase
 
     public function test_todos_page_displays_todos_list()
     {
-        $user = factory(User::class)->create();
-        $todos = factory(Todo::class, 10)->create([
+        $user = User::factory()->create();
+        $todos = Todo::factory()->times(10)->create([
             'user_id' => $user->id,
         ]);
 
@@ -58,13 +59,13 @@ class TodosTest extends TestCase
 
     public function test_user_can_not_see_other_users_todos()
     {
-        $user = factory(User::class)->create();
-        factory(Todo::class)->create([
+        $user = User::factory()->create();
+        Todo::factory()->create([
             'user_id' => $user->id,
         ]);
 
-        $user2 = factory(User::class)->create();
-        $todo = factory(Todo::class)->create([
+        $user2 = User::factory()->create();
+        $todo = Todo::factory()->create([
             'user_id' => $user2->id,
         ]);
 
@@ -76,8 +77,8 @@ class TodosTest extends TestCase
 
     public function test_user_can_see_done_todos()
     {
-        $user = factory(User::class)->create();
-        $todo = factory(Todo::class)->create([
+        $user = User::factory()->create();
+        $todo = Todo::factory()->create([
             'status' => 'done',
             'user_id' => $user->id,
         ]);
@@ -90,8 +91,8 @@ class TodosTest extends TestCase
 
     public function tests_user_can_mark_todo_as_done()
     {
-        $user = factory(User::class)->create();
-        $todo = factory(Todo::class)->create([
+        $user = User::factory()->create();
+        $todo = Todo::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -106,8 +107,8 @@ class TodosTest extends TestCase
     {
         Notification::fake();
 
-        $user = factory(User::class)->create();
-        $todo = factory(Todo::class)->create([
+        $user = User::factory()->create();
+        $todo = Todo::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -122,7 +123,7 @@ class TodosTest extends TestCase
 
     public function test_user_can_delete_todo()
     {
-        $todo = factory(Todo::class)->create();
+        $todo = Todo::factory()->create();
         $this->actingAs($todo->user)->delete('/todo/'.$todo->id);
 
         $this->assertDatabaseCount('todos', 0);

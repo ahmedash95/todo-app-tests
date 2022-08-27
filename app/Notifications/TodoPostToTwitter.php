@@ -26,6 +26,6 @@ class TodoPostToTwitter extends Notification
 
     public function toTwitter($notifiable)
     {
-        return TwitterPoster::forUser($notifiable)->post("I've just finished one of my todos: {$this->todo->name}");
+        return app(TwitterPoster::class)->forUser($notifiable)->post("I've just finished one of my todos: {$this->todo->name}");
     }
 }

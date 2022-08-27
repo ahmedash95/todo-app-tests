@@ -15,7 +15,7 @@ class BehindScheduleCommandTest extends TestCase
     public function test_command_is_emailing_users_for_pending_todos()
     {
         Mail::fake();
-        factory(Todo::class)->create([
+        Todo::factory()->create([
             'created_at' => new \DateTime('-1 day'),
         ]);
         $this->artisan('todos:behind-schedule');
@@ -26,7 +26,7 @@ class BehindScheduleCommandTest extends TestCase
     public function test_command_is_not_sending_emails_for_done_todos()
     {
         Mail::fake();
-        factory(Todo::class)->create([
+        Todo::factory()->create([
             'status' => Todo::STATUS_DONE,
             'created_at' => new \DateTime('-1 day'),
         ]);

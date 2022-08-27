@@ -17,7 +17,7 @@ class CreateTodosTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('name');
-            $table->enum('status',['pending','done']);
+            $table->enum('status',['pending','done'])->default('pending');
             $table->timestamps();
         });
     }
